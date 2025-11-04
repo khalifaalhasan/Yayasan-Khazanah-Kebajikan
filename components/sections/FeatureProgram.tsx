@@ -24,12 +24,15 @@ const features = [
   },
 ];
 
-export default function FeatureCard() {
+export default function FeatureSection() {
   return (
-    <section id="program" className="w-full py-20">
-      <div className="max-w-6xl mx-auto px-6 text-center mb-12">
+    <section
+      id="program"
+      className="w-full py-20 xl:px-50 lg:px-20 md:px-20 sm:px-10 px-6 2xl:px-20"
+    >
+      <div className="max-w-6xl mx-auto px-20 text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-          Program <span className="text-blue-600">Unggulan Kami</span>
+          Program <span className="text-primary">Unggulan Kami</span>
         </h2>
         <p className="text-gray-600 max-w-2xl mx-auto">
           Kami berkomitmen menghadirkan pengalaman belajar terbaik untuk

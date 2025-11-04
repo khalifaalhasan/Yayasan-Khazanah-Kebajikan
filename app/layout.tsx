@@ -27,12 +27,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gradient-to-b from-blue-100 via-white to-white`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gradient-to-blue from-blue-100 via-white to-white`}
       >
         <div className="flex flex-col min-h-screen">
           {/* Navbar */}
           <NavMain />
-
+          
           {/* Konten Utama */}
           <main className="flex-grow">{children}</main>
 

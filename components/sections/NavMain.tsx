@@ -12,11 +12,12 @@ import {
 } from "@heroicons/react/16/solid";
 
 const navItems = [
-  { name: "Beranda", href: "#beranda" },
-  { name: "Tentang", href: "#tentang" },
-  { name: "Program", href: "#program" },
-  { name: "Galeri", href: "#galeri" },
-  { name: "Kontak", href: "#kontak" },
+  { name: "Beranda", href: "/" },
+  { name: "Tentang", href: "/tentang" },
+  { name: "Program", href: "/program" },
+  { name: "Galeri", href: "/galeri" },
+  { name: "Berita", href: "/berita" },
+  { name: "Kontak", href: "/kontak" },
 ];
 
 export default function Navbar() {
@@ -77,6 +78,7 @@ export default function Navbar() {
               key={item.name}
               href={item.href}
               className={`text-sm font-medium transition-all ${
+                pathname === item.href ||
                 activeSection === item.href.replace("#", "")
                   ? "text-primary border-b-2 border-primary"
                   : "text-gray-600 hover:text-primary"

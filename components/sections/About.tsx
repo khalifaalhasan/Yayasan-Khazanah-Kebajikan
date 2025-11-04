@@ -5,10 +5,7 @@ import Image from "next/image";
 
 export function AboutSection() {
   return (
-    <section
-      id="tentang"
-      className="py-24 px-20   overflow-hidden"
-    >
+    <section id="tentang" className="py-24 px-20   overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center gap-12">
         {/* Bagian kiri (teks) */}
         <motion.div
@@ -18,7 +15,7 @@ export function AboutSection() {
           className="flex-1 text-center md:text-left"
         >
           <h2 className="text-4xl font-bold text-gray-900 mb-6">
-            Tentang <span className="text-blue-600">Khazanah Kebajikan</span>
+            Tentang <span className="text-primary">Khazanah Kebajikan</span>
           </h2>
           <p className="text-gray-600 leading-relaxed mb-6">
             Yayasan Khazanah Kebajikan merupakan lembaga pendidikan Islam yang

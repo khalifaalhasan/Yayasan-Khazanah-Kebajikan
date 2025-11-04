@@ -18,7 +18,7 @@ export function GallerySection() {
       <div className="container mx-auto text-center">
         <div className="max-w-6xl mx-auto px-6 text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-            Galeri <span className="text-blue-600">Kegiatan Kami</span>
+            Galeri <span className="text-primary">Kegiatan Kami</span>
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Kami berkomitmen menghadirkan pengalaman belajar terbaik untuk

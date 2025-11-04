@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-blue-600 text-white py-10">
+    <footer className="bg-blue-700 text-white py-10">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Kolom 1: Logo & Deskripsi */}
@@ -16,10 +16,26 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-3">Navigasi</h4>
             <ul className="space-y-2 text-blue-100">
-              <li><a href="#tentang" className="hover:text-white transition">Tentang</a></li>
-              <li><a href="#program" className="hover:text-white transition">Program</a></li>
-              <li><a href="#berita" className="hover:text-white transition">Berita</a></li>
-              <li><a href="#kontak" className="hover:text-white transition">Kontak</a></li>
+              <li>
+                <a href="#tentang" className="hover:text-white transition">
+                  Tentang
+                </a>
+              </li>
+              <li>
+                <a href="#program" className="hover:text-white transition">
+                  Program
+                </a>
+              </li>
+              <li>
+                <a href="#berita" className="hover:text-white transition">
+                  Berita
+                </a>
+              </li>
+              <li>
+                <a href="#kontak" className="hover:text-white transition">
+                  Kontak
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -61,7 +77,8 @@ export default function Footer() {
 
         {/* Garis bawah */}
         <div className="border-t border-white/20 mt-10 pt-6 text-center text-blue-100 text-sm">
-          © {new Date().getFullYear()} Yayasan Khazanah Kebajikan. Semua Hak Dilindungi.
+          © {new Date().getFullYear()} Yayasan Khazanah Kebajikan. Semua Hak
+          Dilindungi.
         </div>
       </div>
     </footer>
