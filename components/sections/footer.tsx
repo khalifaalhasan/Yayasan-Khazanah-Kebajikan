@@ -1,86 +1,98 @@
+import Link from "next/link";
+import { Facebook, Instagram, Youtube } from "lucide-react";
+
 export default function Footer() {
+  const navLinks = [
+    { name: "Beranda", href: "/" },
+    { name: "Tentang", href: "/tentang" },
+    { name: "Program", href: "/program" },
+    { name: "Galeri", href: "/galeri" },
+    { name: "Berita", href: "/berita" },
+    { name: "Kontak", href: "/kontak" },
+  ];
+
   return (
-    <footer className="bg-blue-700 text-white py-10">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Kolom 1: Logo & Deskripsi */}
+    <footer className="relative bg-gradient-to-b from-blue-800 to-blue-900 text-white pt-16 pb-8">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        {/* Grid 4 kolom */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 border-b border-white/10 pb-10">
+          {/* 🔹 Logo & Deskripsi */}
           <div>
-            <h3 className="text-2xl font-bold mb-3">Khazanah Kebajikan</h3>
-            <p className="text-blue-100">
+            <h3 className="text-2xl font-bold mb-3">
+              Khazanah <span className="text-blue-200">Kebajikan</span>
+            </h3>
+            <p className="text-blue-100 leading-relaxed text-sm">
               Yayasan pendidikan Islam yang berkomitmen membangun generasi
-              berilmu dan berakhlak mulia.
+              berilmu dan berakhlak mulia melalui pendidikan yang berlandaskan
+              nilai-nilai kebajikan.
             </p>
           </div>
 
-          {/* Kolom 2: Navigasi */}
+          {/* 🔹 Navigasi */}
           <div>
-            <h4 className="text-lg font-semibold mb-3">Navigasi</h4>
-            <ul className="space-y-2 text-blue-100">
-              <li>
-                <a href="#tentang" className="hover:text-white transition">
-                  Tentang
-                </a>
-              </li>
-              <li>
-                <a href="#program" className="hover:text-white transition">
-                  Program
-                </a>
-              </li>
-              <li>
-                <a href="#berita" className="hover:text-white transition">
-                  Berita
-                </a>
-              </li>
-              <li>
-                <a href="#kontak" className="hover:text-white transition">
-                  Kontak
-                </a>
-              </li>
+            <h4 className="text-lg font-semibold mb-4">Navigasi</h4>
+            <ul className="space-y-2">
+              {navLinks.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-blue-100 hover:text-white transition-colors text-sm"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Kolom 3: Kontak */}
+          {/* 🔹 Kontak */}
           <div>
-            <h4 className="text-lg font-semibold mb-3">Kontak</h4>
-            <ul className="space-y-2 text-blue-100">
+            <h4 className="text-lg font-semibold mb-4">Kontak</h4>
+            <ul className="space-y-2 text-blue-100 text-sm">
               <li>Jl. Contoh No. 45, Palembang</li>
               <li>Telp: (0711) 555-6789</li>
               <li>Email: info@khazanahkebajikan.or.id</li>
             </ul>
           </div>
 
-          {/* Kolom 4: Media Sosial */}
+          {/* 🔹 Media Sosial */}
           <div>
-            <h4 className="text-lg font-semibold mb-3">Ikuti Kami</h4>
+            <h4 className="text-lg font-semibold mb-4">Ikuti Kami</h4>
             <div className="flex gap-4">
-              <a
+              <Link
                 href="#"
-                className="w-9 h-9 flex items-center justify-center bg-white/10 rounded-full hover:bg-white/20 transition"
+                className="w-9 h-9 flex items-center justify-center bg-white/10 rounded-full hover:bg-white/20 transition-all"
               >
-                <i className="ri-facebook-fill text-xl"></i>
-              </a>
-              <a
+                <Facebook className="w-5 h-5" />
+              </Link>
+              <Link
                 href="#"
-                className="w-9 h-9 flex items-center justify-center bg-white/10 rounded-full hover:bg-white/20 transition"
+                className="w-9 h-9 flex items-center justify-center bg-white/10 rounded-full hover:bg-white/20 transition-all"
               >
-                <i className="ri-instagram-line text-xl"></i>
-              </a>
-              <a
+                <Instagram className="w-5 h-5" />
+              </Link>
+              <Link
                 href="#"
-                className="w-9 h-9 flex items-center justify-center bg-white/10 rounded-full hover:bg-white/20 transition"
+                className="w-9 h-9 flex items-center justify-center bg-white/10 rounded-full hover:bg-white/20 transition-all"
               >
-                <i className="ri-youtube-fill text-xl"></i>
-              </a>
+                <Youtube className="w-5 h-5" />
+              </Link>
             </div>
           </div>
         </div>
 
-        {/* Garis bawah */}
-        <div className="border-t border-white/20 mt-10 pt-6 text-center text-blue-100 text-sm">
-          © {new Date().getFullYear()} Yayasan Khazanah Kebajikan. Semua Hak
-          Dilindungi.
+        {/* Copyright */}
+        <div className="mt-8 text-center text-blue-200 text-sm">
+          © {new Date().getFullYear()}{" "}
+          <span className="font-semibold text-white">
+            Yayasan Khazanah Kebajikan
+          </span>
+          . Semua Hak Dilindungi.
         </div>
       </div>
+
+      {/* Efek dekorasi */}
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-blue-900/50 to-transparent pointer-events-none"></div>
     </footer>
   );
 }

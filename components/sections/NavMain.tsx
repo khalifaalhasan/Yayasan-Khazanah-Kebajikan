@@ -1,20 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import {
-  ArrowTopRightOnSquareIcon,
-  Bars3Icon,
-  XMarkIcon,
-} from "@heroicons/react/16/solid";
 
 const navItems = [
   { name: "Beranda", href: "/" },
   { name: "Tentang", href: "/tentang" },
-  { name: "Program", href: "/program" },
+  {
+    name: "Program",
+    href: "#",
+    dropdown: true,
+    subItems: [
+      { name: "Program Beasiswa", href: "#" },
+      { name: "Program Sosial", href: "#" },
+      { name: "Program Santri", href: "#" },
+    ],
+  },
   { name: "Galeri", href: "/galeri" },
   { name: "Berita", href: "/berita" },
   { name: "Kontak", href: "/kontak" },
@@ -23,113 +28,129 @@ const navItems = [
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("beranda");
-
-  useEffect(() => {
-    const sections = document.querySelectorAll("section[id]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "-50% 0px -50% 0px" } // deteksi tengah layar
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => sections.forEach((section) => observer.unobserve(section));
-  }, []);
 
   return (
-    <header className="border-b border-gray-200 bg-white/70 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20">
-      <div className="container mx-auto flex items-center justify-between py-4 px-2 md:px-6">
-        {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
-          <Image
-            src="/logo.png"
-            alt="Logo Yayasan"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-          <span className="font-semibold text-lg text-gray-800">
+    <header className="px-4 sm:px-10 fixed top-0 left-0 w-full z-50 backdrop-blur-lg bg-white/50 border-b border-white/20 shadow-sm">
+      <div className="max-w-7xl mx-auto flex justify-between items-center  md:px-8 py-3">
+        {/* 🔹 Logo */}
+        <Link href="/" className="flex items-center gap-2">
+          <motion.span
+            className="font-extrabold text-lg md:text-xl bg-gradient-to-r from-blue-600 to-amber-500 bg-clip-text text-transparent tracking-tight"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
             Yayasan Khazanah Kebajikan
-          </span>
+          </motion.span>
         </Link>
 
-        {/* Tombol Hamburger */}
+        {/* 🔹 Menu Desktop */}
+        <nav className="hidden md:flex items-center gap-6">
+          {navItems.map((item) => (
+            <div key={item.name} className="relative group cursor-pointer">
+              {item.dropdown ? (
+                <>
+                  <div
+                    className={`flex items-center gap-1 font-medium transition-colors ${
+                      pathname === item.href
+                        ? "text-blue-600"
+                        : "text-gray-700 hover:text-blue-600"
+                    }`}
+                  >
+                    {item.name}
+                    <ChevronDown className="w-4 h-4 mt-[1px] transition-transform group-hover:rotate-180" />
+                  </div>
+                  {/* Hover Dropdown */}
+                  <div className="absolute left-0 mt-2 hidden group-hover:block w-48 bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden transition-all duration-500">
+                    <div className="flex flex-col">
+                      {item.subItems?.map((sub) => (
+                        <Link
+                          key={sub.name}
+                          href={sub.href}
+                          className="px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <Link
+                  href={item.href}
+                  className={`font-medium transition-all duration-200 ${
+                    pathname === item.href
+                      ? "text-blue-600 border-b-2 border-blue-600"
+                      : "text-gray-700 hover:text-blue-600"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              )}
+            </div>
+          ))}
+        </nav>
+
+        {/* 🔹 Button CTA */}
+        <div className="hidden md:block">
+          <Button className="bg-blue-700 text-white hover:bg-blue-800 rounded-full px-8 shadow-lg hover:shadow-xl transition-all">
+            Donasi Sekarang
+          </Button>
+        </div>
+
+        {/* 🔹 Hamburger Menu */}
         <button
           className="md:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {isOpen ? (
-            <XMarkIcon className="h-6 w-6" />
-          ) : (
-            <Bars3Icon className="h-6 w-6" />
-          )}
+          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
-
-        {/* Menu utama */}
-        <nav className="hidden md:flex space-x-8">
-          {navItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className={`text-sm font-medium transition-all ${
-                pathname === item.href ||
-                activeSection === item.href.replace("#", "")
-                  ? "text-primary border-b-2 border-primary"
-                  : "text-gray-600 hover:text-primary"
-              }`}
-            >
-              {item.name}
-            </a>
-          ))}
-        </nav>
-
-        {/* Tombol Bergabung */}
-        <div className="hidden md:block">
-          <Link href="/Pendaftaran" target="_blank">
-            <Button className="bg-primary text-white hover:bg-primary/90">
-              Bergabung Bersama Kami
-              <ArrowTopRightOnSquareIcon className="w-5 h-5 ml-2" />
-            </Button>
-          </Link>
-        </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* 🔹 Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 shadow-sm">
-          <nav className="flex flex-col space-y-2 p-4">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className={`block text-sm font-medium py-2 px-3 rounded-md transition-colors ${
-                  activeSection === item.href.replace("#", "")
-                    ? "text-primary bg-primary/10"
-                    : "text-gray-700 hover:bg-gray-100 hover:text-primary"
-                }`}
-              >
-                {item.name}
-              </a>
-            ))}
-            <Link
-              href="/Pendaftaran"
-              target="_blank"
-              onClick={() => setIsOpen(false)}
-            >
-              <Button className="w-full bg-primary text-white hover:bg-primary/90">
-                Bergabung Bersama Kami
-                <ArrowTopRightOnSquareIcon className="w-5 h-5 ml-2" />
-              </Button>
-            </Link>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="md:hidden bg-white border-t border-gray-100 shadow-md"
+        >
+          <nav className="flex flex-col p-4 space-y-2">
+            {navItems.map((item) =>
+              item.dropdown ? (
+                <div key={item.name}>
+                  <span className="block py-2 px-3 text-gray-700 font-medium">
+                    {item.name}
+                  </span>
+                  <div className="flex flex-col ml-4 mt-1 border-l border-gray-200">
+                    {item.subItems?.map((sub) => (
+                      <Link
+                        key={sub.name}
+                        href={sub.href}
+                        className="py-2 px-3 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
+                      >
+                        {sub.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`block py-2 px-3 text-gray-700 font-medium rounded-md hover:bg-gray-50 ${
+                    pathname === item.href ? "bg-blue-50 text-blue-600" : ""
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              )
+            )}
+
+            <Button className="mt-3 bg-blue-700 text-white hover:bg-blue-800 rounded-full px-8 shadow-lg hover:shadow-xl transition-all">
+              Donasi Sekarang
+            </Button>
           </nav>
-        </div>
+        </motion.div>
       )}
     </header>
   );

@@ -5,10 +5,11 @@ import { ProgramSection } from "@/project-santri/components/sections/Program";
 export default function ProgramPage() {
   return (
     <>
-        <>
-          <HeaderPage />
-        </>
+      <>
+        <HeaderPage />
+      </>
       <LazySection>
+  
         <ProgramSection />
       </LazySection>
     </>

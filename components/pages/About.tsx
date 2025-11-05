@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export function AboutSection() {
+export function AboutPage() {
   return (
     <section id="tentang" className="py-24 px-20   overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center gap-12">
