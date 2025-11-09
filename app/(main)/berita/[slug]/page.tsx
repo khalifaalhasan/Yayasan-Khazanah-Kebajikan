@@ -1,64 +1,30 @@
 // app/berita/[slug]/page.tsx
-import { createSupabaseServerClient } from "@/lib/supabase/server"; // <-- Tetap dipakai untuk Komponen
-import { createClient } from "@supabase/supabase-js"; // <-- BARU: Impor klien dasar
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import BeritaSidebar from "@/components/pages/Berita/BeritaSidebar";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
-interface Props {
-  params: { slug: string };
-}
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;  // Unwrap Promise
+  const { slug } = resolvedParams;
 
-// Helper untuk format tanggal
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString("id-ID", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
-
-// =========================================================================
-// KOMPONEN UTAMA (TIDAK BERUBAH)
-// Ini dijalankan saat REQUEST TIME, jadi AMAN menggunakan createSupabaseServerClient
-// =========================================================================
-// app/(main)/berita/[slug]/page.tsx
-
-// ... (semua import Anda)
-
-interface Props {
-  params: { slug: string };
-}
-
-// ... (fungsi formatDate Anda)
-
-export default async function DetailBerita({ params }: Props) {
-  
-  // ===================================================================
-  // PERBAIKAN: "Amankan" nilai slug SEBELUM await pertama
-  // ===================================================================
-  const slug = params.slug;
-  // ===================================================================
-
-  // Sekarang baru panggil await
   const supabase = await createSupabaseServerClient();
 
   const { data } = await supabase
     .from("berita")
     .select("*")
-    .eq("slug", slug) // <-- GUNAKAN VARIABEL 'slug'
+    .eq("slug", slug)
     .single();
+
 
   if (!data) {
     notFound();
   }
 
   return (
-    <main className="max-w-7xl mx-auto py-12 px-6">
+    <main className="max-w-4xl mx-auto py-12 px-6">
       <div className="mb-8">
         <Link href="/berita" passHref>
           <Button variant="outline">
@@ -68,26 +34,31 @@ export default async function DetailBerita({ params }: Props) {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-12">
-        {/* --- KOLOM KONTEN UTAMA --- */}
-        <article className="lg:col-span-2">
-          {/* ... (sisa kode Image, h1, div, dll.) ... */}
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">{data.judul}</h1>
-          {/* ... */}
-          <div
-            className="prose prose-lg max-w-none"
-            dangerouslySetInnerHTML={{ __html: data.isi }}
+      {data.gambar && (
+        <div className="mb-8 rounded-lg overflow-hidden">
+          <Image
+            src={data.gambar}
+            alt={data.judul}
+            width={800}
+            height={450}
+            className="w-full object-cover"
+            priority
           />
-        </article>
-
-        {/* --- KOLOM SIDEBAR --- */}
-        <div className="lg:col-span-1 mt-12 lg:mt-0">
-          {/* GUNAKAN 'slug' DI SINI JUGA */}
-          <BeritaSidebar currentSlug={slug} /> 
         </div>
-      </div>
+      )}
+
+      <h1 className="text-3xl md:text-4xl font-bold mb-4">{data.judul}</h1>
+      <p className="text-sm text-muted-foreground mb-8">{new Date(data.created_at).toLocaleDateString("id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      })}</p>
+      
+      <article
+        className="prose prose-lg max-w-none"
+        dangerouslySetInnerHTML={{ __html: data.isi }}
+      />
     </main>
   );
 }
-
-// ... (fungsi generateStaticParams Anda) ...
