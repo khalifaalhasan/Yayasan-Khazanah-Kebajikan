@@ -43,16 +43,19 @@ export default async function Page({
   return (
     <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8 py-10 px-4 pt-25 ">
       {/* Kolom konten utama */}
-      <main className="lg:col-span-3 ">
+      <main className="lg:col-span-3 h-auto ">
         {current.thumbnail && (
-          <img
+          <Image
             src={current.thumbnail}
             alt={current.judul}
-            className="w-full rounded-xl mb-6 object-cover shadow"
-            style={{ maxHeight: "320px" }}
+            width={1200} // sesuaikan lebar max sesuai kebutuhan desain
+            height={600} // tinggi yang sesuai untuk menjaga aspect ratio ideal
+            className="rounded-2xl object-contain w-full h-auto"
+            sizes="(max-width: 1024px) 100vw, 1024px"
+            priority
           />
         )}
-        <h1 className="text-3xl font-bold mb-3">{current.judul}</h1>
+        <h1 className="py-5 text-3xl font-bold mb-3">{current.judul}</h1>
         <div className="text-sm text-gray-500 mb-6">
           {current.penulis && <span>{current.penulis} • </span>}
           {new Date(current.tanggal ?? current.created_at).toLocaleDateString(
