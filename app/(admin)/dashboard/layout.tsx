@@ -86,7 +86,7 @@ export default function DashboardLayout({
                   className="flex items-center gap-2 font-bold text-indigo-600"
                 >
                   <Package2 className="h-7 w-7 text-indigo-500" />
-                  <span>Khazanah Admin</span>
+                  <span>Admin Panel YKK</span>
                 </Link>
               </div>
               <DashboardNav />
