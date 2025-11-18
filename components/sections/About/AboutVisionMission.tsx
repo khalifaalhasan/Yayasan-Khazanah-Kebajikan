@@ -32,7 +32,7 @@ export default function AboutVisionMission() {
         </div>
 
         {/* MISI */}
-        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6 max-w-8xl mx-8xl-auto justify-center ">
           {[
             "Membumikan Al-Qur’an dalam kehidupan bermasyarakat (Budaya Qur’an).",
             "Membudayakan gemar berderma (ZIS) dan sholat tahajud.",

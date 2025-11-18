@@ -1,43 +1,41 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { useEffect, useMemo, useState } from "react"
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useEffect, useMemo, useState } from "react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
-
-
 
 export default function GaleriPreview() {
   const supabase = useMemo(() => createSupabaseBrowserClient(), []);
 
-   const [images, setImages] = useState<string[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-  
-    useEffect(() => {
-      let mounted = true;
-      const fetchBerita = async () => {
-        setLoading(true);
-        const {data, error} = await supabase
+  const [images, setImages] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchBerita = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
         .from("berita")
         .select("thumbnail")
-        .order("created_at", {ascending: false})
-  
+        .order("created_at", { ascending: false });
+
       if (error) {
         console.error("Error fetching Images:", error);
         setImages([]);
-      }else if(mounted){
+      } else if (mounted) {
         setImages(data.map((item) => item.thumbnail));
-      };
+      }
       setLoading(false);
     };
-      fetchBerita();
-  
-      return () => {
-        mounted = false;
-      }
-    }, []);
+    fetchBerita();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <section className="py-24 bg-white">
@@ -72,10 +70,13 @@ export default function GaleriPreview() {
           ))}
         </div>
 
-        <Button asChild className="mt-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6">
+        <Button
+          asChild
+          className="mt-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6"
+        >
           <Link href="/galeri">Lihat Semua</Link>
         </Button>
       </div>
     </section>
-  )
+  );
 }
