@@ -93,7 +93,7 @@ export default function Navbar() {
             ))}
             {ctaItems.map((i) => (
               <Link key={i.name} href={i.href} onClick={() => setIsOpen(false)}>
-                <Button className="mt-3 bg-blue-700 text-white justify-center align-center-items hover:bg-blue-800 rounded-full px-8 shadow-lg hover:shadow-xl transition-all">
+                <Button className="mt-3 bg-blue-700 text-white w-full hover:bg-blue-800 rounded-full px-8 shadow-lg hover:shadow-xl transition-all">
                   Donasi Sekarang
                 </Button>
               </Link>
