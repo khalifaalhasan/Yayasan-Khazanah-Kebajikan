@@ -1,10 +1,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Home,
-  Newspaper,
-  ChevronDown,
-} from "lucide-react";
+import { Home, Newspaper, ChevronDown, Inbox } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -28,7 +24,12 @@ const adminNavItems = [
       { title: "Buat Baru", href: "/dashboard/berita/create" },
     ],
   },
-  
+  {
+    title: "Donasi",
+    href: "/dashboard/donasi",
+    icon: Inbox,
+    items: [],
+  },
 ];
 
 // Navigasi publik
@@ -43,13 +44,18 @@ const publicNavItems = [
     href: "/berita",
     icon: Newspaper,
   },
+  {
+    title: "Tampilan Donasi",
+    href: "/donasi",
+    icon: Inbox,
+  },
 ];
 
 export function DashboardNav() {
   const pathname = usePathname();
 
   // Render item dengan dropdown jika ada children
-  const renderNavItem = (item: typeof adminNavItems[0]) => {
+  const renderNavItem = (item: (typeof adminNavItems)[0]) => {
     const isActive = pathname.startsWith(item.href);
 
     if ((item.items?.length ?? 0) > 0) {

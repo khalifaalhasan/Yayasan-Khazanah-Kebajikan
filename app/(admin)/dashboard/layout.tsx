@@ -119,7 +119,11 @@ export default function DashboardLayout({
           {/* User dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full outline-1"
+              >
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="/avatars/placeholder.png" alt="Admin" />
                   <AvatarFallback>A</AvatarFallback>
@@ -130,12 +134,6 @@ export default function DashboardLayout({
               align="end"
               className="mt-2 bg-white shadow-lg border border-indigo-50 rounded-lg"
             >
-              <DropdownMenuLabel className="text-indigo-600 font-semibold">
-                Akun Saya
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleLogout}
                 className="cursor-pointer text-red-600 hover:bg-red-50 font-semibold flex gap-2 items-center"
