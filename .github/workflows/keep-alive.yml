@@ -14,6 +14,6 @@ jobs:
         # -S: show error (menampilkan pesan error jika fail)
         run: |
           curl -f -S --request GET \
-          --url '${{ secrets.SUPABASE_URL }}/rest/v1/profiles?select=*&limit=1' \
+          --url '${{ secrets.SUPABASE_URL }}/rest/v1/berita?select=*&limit=1' \
           --header 'Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}' \
           --header 'apikey: ${{ secrets.SUPABASE_ANON_KEY }}'
