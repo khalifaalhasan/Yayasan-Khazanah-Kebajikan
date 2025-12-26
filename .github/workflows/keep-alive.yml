@@ -2,7 +2,7 @@ name: Supabase Keep Alive
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Jalan tiap jam 00:00 UTC
+    - cron: '0 0,12 * * *' # Jalan 2x sehari
   workflow_dispatch:
 
 jobs:
@@ -10,10 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping Supabase Database
-        # -f: fail silently (server error dianggap fail di action)
-        # -S: show error (menampilkan pesan error jika fail)
         run: |
-          curl -f -S --request GET \
-          --url '${{ secrets.SUPABASE_URL }}/rest/v1/berita?select=*&limit=1' \
-          --header 'Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}' \
-          --header 'apikey: ${{ secrets.SUPABASE_ANON_KEY }}'
+          curl -v --fail --retry 5 --retry-delay 5 --max-time 30 \
+          --request GET \
+          --url '${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}/rest/v1/berita?select=*&limit=1' \
+          --header 'Authorization: Bearer ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}' \
+          --header 'apikey: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}'
