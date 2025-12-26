@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, Search, HeartHandshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 const navItems = [
   { name: "Beranda", href: "/" },
@@ -14,93 +15,128 @@ const navItems = [
   { name: "Berita", href: "/berita" },
 ];
 
-const ctaItems = [{ name: "Donasi", href: "/donasi" }];
-
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="px-4 sm:px-10 fixed top-0 left-0 w-full z-50 backdrop-blur-lg bg-white/50 border-b border-white/20 shadow-sm">
-      <div className="max-w-7xl mx-auto flex justify-between  md:px-8 py-3">
-        {/* 🔹 Logo */}
-        <Link href="/" className="flex items-start justify-start gap-2">
-          <motion.span
-            className="font-extrabold text-lg md:text-xl bg-gradient-to-r from-blue-600 to-amber-500 bg-clip-text text-transparent tracking-tight"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            Yayasan Khazanah Kebajikan
-          </motion.span>
-        </Link>
+    <>
+      {/* Header dibuat absolute agar background halaman (hero section) 
+        bisa terlihat di belakangnya, memberi kesan modern.
+        Tidak pakai 'fixed', jadi tidak sticky.
+      */}
+      <header className="absolute top-0 left-0 w-full z-50 pt-4 md:pt-6 px-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          {/* 🔹 KIRI: Logo */}
+          <Link href="/" className="flex items-center gap-3 z-20 group">
+            {/* Wrapper gambar agar rapi, rounded, dan ada border halus */}
+            <div className="relative w-15 h-15  group-hover:border-blue-200 transition-colors">
+              <Image
+                src="/images/about/icon.jpg"
+                alt="Logo Yayasan Khazanah Kebajikan"
+                width={200} // Sesuaikan dengan w-10 (40px)
+                height={200} // Sesuaikan dengan h-10 (40px)
+                className="object-cover w-full h-full" // Agar gambar tidak gepeng (stretch)
+              />
+            </div>
 
-        {/* 🔹 Menu Desktop */}
-        <nav className="hidden md:flex items-center gap-6">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`font-medium transition-all duration-200 ${
-                pathname === item.href
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-700 hover:text-blue-600"
-              }`}
-            >
-              {item.name}
-            </Link>
-          ))}
-        </nav>
+            <span className="font-bold text-lg text-slate-900 tracking-tight hidden sm:block group-hover:text-blue-700 transition-colors">
+              Khazanah Kebajikan Palembang
+            </span>
+          </Link>
 
-        {/* 🔹 Button CTA */}
-        <div className="hidden md:block">
-          {ctaItems.map((i) => (
-            <Link key={i.name} href={i.href}>
-              <Button className="bg-orange-500 text-white hover:bg-orange-400 rounded-full px-8 shadow-lg hover:shadow-xl transition-all">
+          {/* 🔹 TENGAH: Menu Desktop (Floating Pill Container) */}
+          {/* Container ini yang membuat efek 'Menu Float' seperti referensi */}
+          <nav className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 z-10">
+            <div className="bg-white/60 backdrop-blur-md border border-white/40 shadow-sm rounded-full px-2 py-1.5 flex items-center gap-1">
+              {navItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                      isActive
+                        ? "text-blue-700 bg-white shadow-sm"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
+            </div>
+          </nav>
+
+          {/* 🔹 KANAN: Actions (Icons + CTA) */}
+          <div className="hidden md:flex items-center gap-3 z-20">
+            {/* Search Icon (Dummy) */}
+            <button className="p-2 text-slate-500 hover:text-blue-600 transition-colors">
+              <Search className="w-5 h-5" />
+            </button>
+
+            {/* Divider Kecil */}
+            <div className="h-4 w-px bg-slate-300 mx-1"></div>
+
+            <Link href="/donasi">
+              <Button className="bg-amber-500 hover:bg-blue-800 text-white rounded-full px-6 shadow-lg shadow-slate-900/10 transition-all active:scale-95">
                 Donasi Sekarang
               </Button>
             </Link>
-          ))}
+          </div>
+
+          {/* 🔹 Mobile Toggle Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2 text-slate-700 bg-white/50 backdrop-blur-md rounded-full border border-white/20 hover:bg-white transition-colors z-20"
+          >
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
+      </header>
 
-        {/* 🔹 Hamburger Menu */}
-        <button
-          className="md:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
-
-      {/* 🔹 Mobile Menu */}
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="md:hidden bg-white border-t border-gray-100 shadow-md"
-        >
-          <nav className="flex flex-col p-4 space-y-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className={`block py-2 px-3 text-gray-700 font-medium rounded-md hover:bg-gray-50 ${
-                  pathname === item.href ? "bg-blue-50 text-blue-600" : ""
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-            {ctaItems.map((i) => (
-              <Link key={i.name} href={i.href} onClick={() => setIsOpen(false)}>
-                <Button className="mt-3 bg-blue-700 text-white w-full hover:bg-blue-800 rounded-full px-8 shadow-lg hover:shadow-xl transition-all">
-                  Donasi Sekarang
+      {/* 🔹 MOBILE MENU (Floating Card Style) */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
+            />
+            <motion.div
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-20 left-4 right-4 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 md:hidden p-4 space-y-2"
+            >
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center justify-between p-3 rounded-xl ${
+                    pathname === item.href
+                      ? "bg-blue-50 text-blue-700 font-semibold"
+                      : "text-slate-600 hover:bg-gray-50"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+              <div className="h-px bg-gray-100 my-2" />
+              <Link href="/donasi" onClick={() => setIsOpen(false)}>
+                <Button className="w-full bg-[#0F172A] text-white rounded-xl py-6 shadow-lg">
+                  <HeartHandshake className="mr-2 w-5 h-5" /> Donasi Sekarang
                 </Button>
               </Link>
-            ))}
-          </nav>
-        </motion.div>
-      )}
-    </header>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
