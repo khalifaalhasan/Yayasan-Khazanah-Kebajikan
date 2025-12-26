@@ -13,9 +13,26 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Yayasan Khazanah Kebajikan",
-  description: "Membangun generasi berilmu dan berakhlak mulia",
+  description: "Website resmi Yayasan Khazanah Kebajikan",
+  // Konfigurasi Open Graph Global
+  openGraph: {
+    title: "Yayasan Khazanah Kebajikan", // sesuaikan title dan description dengan app kalian
+    description: "Mari berbagi kebaikan bersama kami.",
+    url: "https://khazanahkebajikan.com", //domain kalian
+    siteName: "Yayasan Khazanah Kebajikan",
+    images: [
+      {
+        url: "/banner-utama.png", // Pastikan file ada di folder public
+        width: 1200,
+        height: 630,
+        alt: "Banner Yayasan Khazanah Kebajikan",
+      },
+    ],
+    locale: "id_ID",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -24,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="id">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gradient-to-blue from-blue-100 via-white to-white`}
       >
