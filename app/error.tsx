@@ -1,9 +1,7 @@
-"use client";
+"use client"; // Wajib untuk error component
 
-import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { AlertTriangle, RefreshCcw, Home } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Error({
   error,
@@ -13,62 +11,56 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log error ke layanan pelaporan error (sentry, console, dll)
-    console.error("Terjadi kesalahan aplikasi:", error);
+    // Opsional: Log error ke layanan monitoring (Sentry, dll)
+    console.error(error);
   }, [error]);
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-background px-4 text-center">
-      {/* Decorative Background */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-[40%] left-[30%] h-[40%] w-[60%] rounded-full bg-red-500/5 blur-[120px]" />
-      </div>
-
-      <div className="space-y-6 max-w-md">
-        {/* Icon Container */}
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20">
-          <AlertTriangle className="h-10 w-10 text-red-600 dark:text-red-500" />
-        </div>
-
-        <div className="space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
-            Terjadi Kesalahan Sistem
-          </h2>
-          <p className="text-muted-foreground text-lg">
-            Mohon maaf, kami mengalami kendala teknis saat memproses permintaan Anda. Tim kami telah diberitahu.
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-          <Button 
-            onClick={() => reset()} 
-            size="lg" 
-            className="bg-red-600 hover:bg-red-700 text-white"
-          >
-            <RefreshCcw className="mr-2 h-4 w-4" />
-            Coba Lagi
-          </Button>
-          <Button asChild variant="outline" size="lg">
-            <Link href="/">
-              <Home className="mr-2 h-4 w-4" />
-              Ke Beranda
-            </Link>
-          </Button>
-        </div>
-
-        {/* Technical Details (Opsional, bagus untuk debugging admin) */}
-        <div className="pt-8">
-          <div className="rounded-lg bg-muted p-4 text-left">
-            <p className="text-xs font-mono text-muted-foreground mb-1">Detail Error (Developer):</p>
-            <code className="text-xs font-mono text-red-500 block break-all">
-              {error.message || "Unknown Error"}
-            </code>
-            {error.digest && (
-              <code className="text-xs font-mono text-muted-foreground block mt-1">
-                Digest: {error.digest}
-              </code>
-            )}
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6 text-center">
+      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+        {/* Icon: Alert/Warning */}
+        <div className="flex justify-center mb-6">
+          <div className="bg-red-50 p-4 rounded-full">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="64"
+              height="64"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#dc2626" // Merah Error
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+              <path d="M12 9v4" />
+              <path d="M12 17h.01" />
+            </svg>
           </div>
+        </div>
+
+        <h1 className="text-2xl font-bold text-gray-900 mb-3">
+          Ada Sedikit Masalah 😓
+        </h1>
+
+        <p className="text-gray-500 mb-8 leading-relaxed">
+          Sistem kami mengalami kendala tak terduga. Tenang, ini bukan salah
+          Anda. Tim kami sudah diberitahu.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <button
+            onClick={() => reset()}
+            className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+          >
+            Coba Lagi
+          </button>
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-gray-700 transition-colors bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
+          >
+            Ke Beranda
+          </Link>
         </div>
       </div>
     </div>
