@@ -8,22 +8,16 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Share2, Copy, ArrowLeft, Trash2 } from "lucide-react"; // Tambah icon Trash
+import { Share2, Copy, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-
-const BANK_DETAILS = {
-  nama: "BSI (Bank Syariah Indonesia)",
-  rek: "7123456789",
-  an: "YAYASAN KHAZANAH",
-};
-const WA_ADMIN = "6281234567890";
+import branding from "@/data/branding.json"; // 👈 Import data branding
 
 export default function HalamanDonasi() {
   const supabase = createSupabaseBrowserClient();
 
   const [step, setStep] = useState<"FORM" | "PAYMENT">("FORM");
   const [loading, setLoading] = useState(false);
-  const [checkingStorage, setCheckingStorage] = useState(true); // State untuk loading awal
+  const [checkingStorage, setCheckingStorage] = useState(true);
 
   // Data Form
   const [nominal, setNominal] = useState("");
@@ -42,23 +36,18 @@ export default function HalamanDonasi() {
       minimumFractionDigits: 0,
     }).format(val);
 
-  // ---------------------------------------------------------
-  // 1. LOGIKA CEK DRAFT DONASI (Saat halaman dimuat)
-  // ---------------------------------------------------------
+  // 1. LOGIKA CEK DRAFT DONASI
   useEffect(() => {
     const checkLastDonation = async () => {
-      // Ambil ID dari penyimpanan browser
       const savedId = localStorage.getItem("last_donation_id");
 
       if (savedId) {
-        // Jika ada ID, cek ke database Supabase
         const { data, error } = await supabase
           .from("donasi")
           .select("*")
           .eq("id", savedId)
           .single();
 
-        // Jika data ditemukan dan statusnya belum lunas (misal masih PENDING)
         if (data && !error) {
           setDonationId(data.id);
           setNama(data.nama_lengkap);
@@ -66,12 +55,9 @@ export default function HalamanDonasi() {
           setDoa(data.doa_pesan || "");
           setWa(data.no_wa || "");
           setMethod(data.metode_pembayaran as never);
-
-          // Langsung loncat ke halaman pembayaran
           setStep("PAYMENT");
           toast.info("Melanjutkan sesi donasi terakhir Anda.");
         } else {
-          // Jika error atau data tidak ada (sudah dihapus), bersihkan storage
           localStorage.removeItem("last_donation_id");
         }
       }
@@ -79,11 +65,9 @@ export default function HalamanDonasi() {
     };
 
     checkLastDonation();
-  }, []);
+  }, [supabase]);
 
-  // ---------------------------------------------------------
-  // 2. HANDLE SUBMIT (Simpan ke Storage)
-  // ---------------------------------------------------------
+  // 2. HANDLE SUBMIT
   const handleSubmit = async () => {
     const amount = parseInt(nominal.replace(/\./g, ""));
     if (!amount || amount < 1000) return toast.error("Minimal donasi Rp 1.000");
@@ -111,18 +95,13 @@ export default function HalamanDonasi() {
       toast.error("Gagal: " + error.message);
     } else {
       setDonationId(data.id);
-
-      // === SIMPAN ID KE STORAGE ===
       localStorage.setItem("last_donation_id", data.id);
-
       setStep("PAYMENT");
       toast.success("Data tersimpan, silakan transfer");
     }
   };
 
-  // ---------------------------------------------------------
-  // 3. RESET / BUAT BARU (Hapus Storage)
-  // ---------------------------------------------------------
+  // 3. RESET / BUAT BARU
   const handleBuatBaru = () => {
     localStorage.removeItem("last_donation_id");
     setDonationId("");
@@ -134,19 +113,23 @@ export default function HalamanDonasi() {
     toast.success("Formulir di-reset.");
   };
 
+  // 4. KONFIRMASI WA (Menggunakan data dari branding.json)
   const handleKonfirmasi = () => {
     const amount = parseInt(nominal.replace(/\./g, ""));
     const text = `Assalamualaikum Admin, saya sudah transfer.\n\nID: ${donationId.slice(
       0,
       8
     )}\nNama: ${nama}\nNominal: ${formatRupiah(amount)}\nVia: Transfer Bank`;
+
+    // Gunakan branding.contact.whatsappAPI
     window.open(
-      `https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(text)}`,
+      `https://wa.me/${branding.contact.whatsappAPI}?text=${encodeURIComponent(
+        text
+      )}`,
       "_blank"
     );
   };
 
-  // Loading state awal agar tidak kedip
   if (checkingStorage) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -164,7 +147,7 @@ export default function HalamanDonasi() {
         <CardContent className="space-y-6">
           {step === "FORM" ? (
             <>
-              {/* --- FORM INPUT SAMA SEPERTI SEBELUMNYA --- */}
+              {/* --- FORM INPUT --- */}
               <div className="space-y-2">
                 <Label>Nominal (Rp)</Label>
                 <Input
@@ -262,23 +245,28 @@ export default function HalamanDonasi() {
               </div>
 
               <div className="text-left bg-gray-100 p-4 rounded-lg space-y-2 border border-gray-200">
-                <p className="font-bold text-gray-700">{BANK_DETAILS.nama}</p>
+                {/* Menggunakan data dari branding.json */}
+                <p className="font-bold text-gray-700">{branding.bank.name}</p>
                 <div className="flex justify-between items-center bg-white p-3 rounded border border-gray-200">
                   <p className="text-xl font-mono font-semibold text-gray-800">
-                    {BANK_DETAILS.rek}
+                    {branding.bank.accountNumber}
                   </p>
                   <Button
                     size="icon"
                     variant="ghost"
                     onClick={() => {
-                      navigator.clipboard.writeText(BANK_DETAILS.rek);
+                      navigator.clipboard.writeText(
+                        branding.bank.accountNumber
+                      );
                       toast.success("No Rekening disalin!");
                     }}
                   >
                     <Copy className="w-4 h-4" />
                   </Button>
                 </div>
-                <p className="text-sm text-gray-600">A.n {BANK_DETAILS.an}</p>
+                <p className="text-sm text-gray-600">
+                  A.n {branding.bank.holderName}
+                </p>
               </div>
 
               <div className="space-y-2">
@@ -290,7 +278,6 @@ export default function HalamanDonasi() {
                   <Share2 className="mr-2 w-4 h-4" /> Konfirmasi WhatsApp
                 </Button>
 
-                {/* Tombol "Batal / Buat Baru" untuk menghapus session storage */}
                 <Button
                   variant="ghost"
                   className="w-full text-red-500 hover:text-red-600 hover:bg-red-50"
@@ -298,11 +285,6 @@ export default function HalamanDonasi() {
                 >
                   <Trash2 className="mr-2 w-4 h-4" /> Batalkan & Buat Baru
                 </Button>
-
-                {/* Jika tombol kembali biasa hanya back ke form tanpa hapus data, opsional */}
-                {/* <Button variant="ghost" className="w-full" onClick={() => setStep("FORM")}>
-                  <ArrowLeft className="mr-2 w-4 h-4" /> Edit Data
-                </Button> */}
               </div>
             </div>
           )}
