@@ -1,0 +1,26 @@
+{
+  "organization": {
+    "name": "Yayasan Khazanah Kebajikan",
+    "shortName": "YKK Palembang",
+    "description": "Lembaga sosial dan pendidikan yang berkomitmen membangun generasi berilmu, berakhlak mulia, dan mandiri.",
+    "address": "Desa Sako, Kec. Sako, Kota Palembang, Sumatera Selatan 30961",
+    "googleMapsUrl": "https://maps.app.goo.gl/WgqAXQRz51hxqyPn6"
+  },
+  "contact": {
+    "email": "khazanahkebajikan@gmail.com",
+    "phoneDisplay": "+62 831-4280-4304",
+    "whatsappAPI": "6283142804304",
+    "whatsappUrl": "https://wa.me/6283142804304"
+  },
+  "bank": {
+    "name": "BSI (Bank Syariah Indonesia)",
+    "accountNumber": "7999077735",
+    "holderName": "Yayasan Khazanah Kebajikan",
+    "code": "451"
+  },
+  "socials": {
+    "instagram": "https://www.instagram.com/humas_khazanah",
+    "facebook": "https://www.facebook.com/profile.php?id=61550248105368",
+    "youtube": "https://youtube.com/@ykk.palembang"
+  }
+}
