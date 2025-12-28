@@ -50,7 +50,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="id">
       <body>
         <div className="flex flex-col min-h-screen">
           {/* Navbar */}
