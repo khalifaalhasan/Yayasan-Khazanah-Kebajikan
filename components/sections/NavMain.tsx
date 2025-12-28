@@ -13,6 +13,7 @@ const navItems = [
   { name: "Tentang Kami", href: "/tentang" },
   { name: "Galeri", href: "/galeri" },
   { name: "Berita", href: "/berita" },
+  { name: "kontak", href: "/kontak" },
 ];
 
 export default function Navbar() {
