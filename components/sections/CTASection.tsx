@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { HeartHandshake, MessageCircle, Sparkles } from "lucide-react";
+import branding from "@/data/branding.json";
 
 export default function CTASection() {
   return (
@@ -72,7 +73,7 @@ export default function CTASection() {
                 className="w-full sm:w-auto border-slate-600 text-white bg-transparent hover:bg-white/10 hover:text-white rounded-full px-8 py-7 text-lg font-medium transition-all"
               >
                 <Link
-                  href="https://wa.me/628123456789"
+                  href={branding.contact.whatsappUrl}
                   target="_blank"
                   className="flex items-center gap-2"
                 >
